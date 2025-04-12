@@ -19,6 +19,7 @@ package io.cdap.wrangler.clients;
 /**
  * This is exception thrown when there is issue with request or response.
  */
+
 public class RestClientException extends Exception {
   // Status of the response.
   private final int status;

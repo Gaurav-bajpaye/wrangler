@@ -39,6 +39,10 @@ import org.antlr.v4.runtime.misc.Interval;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
+import io.cdap.wrangler.api.parser.ByteSize;
+import io.cdap.wrangler.api.parser.TimeDuration;
+
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -147,6 +151,26 @@ public final class RecipeVisitor extends DirectivesBaseVisitor<RecipeSymbol.Buil
     builder.addVersion(ctx.Number().getText());
     return builder;
   }
+
+  @Override
+public RecipeSymbol.Builder visitValue(DirectivesParser.ValueContext ctx) {
+  if (ctx.ByteSize() != null) {
+    builder.addToken(new ByteSize(ctx.getText()));
+  } else if (ctx.TimeDuration() != null) {
+    builder.addToken(new TimeDuration(ctx.getText()));
+  } else if (ctx.String() != null) {
+    String value = ctx.String().getText();
+    builder.addToken(new Text(value.substring(1, value.length() - 1)));
+  } else if (ctx.Number() != null) {
+    builder.addToken(new Numeric(new LazyNumber(ctx.Number().getText())));
+  } else if (ctx.Bool() != null) {
+    builder.addToken(new Bool(Boolean.parseBoolean(ctx.Bool().getText())));
+  } else if (ctx.Column() != null) {
+    builder.addToken(new ColumnName(ctx.Column().getText().substring(1)));
+  }
+
+  return builder;
+}
 
   /**
    * A Directive can include number ranges like start:end=value[,start:end=value]*. This

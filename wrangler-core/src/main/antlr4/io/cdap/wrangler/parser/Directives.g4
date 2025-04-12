@@ -140,8 +140,22 @@ numberRange
  ;
 
 value
- : String | Number | Column | Bool
+ : String
+ | Number
+ | Column
+ | Bool
+ | ByteSize
+ | TimeDuration
  ;
+
+ ByteSize
+ : BYTE_SIZE
+ ;
+
+TimeDuration
+ : TIME_DURATION
+ ;
+
 
 ecommand
  : '!' Identifier
@@ -248,6 +262,14 @@ Dollar   : '$';
 Tilde    : '~';
 
 
+BYTE_SIZE
+ : Number BYTE_UNIT
+ ;
+
+TIME_DURATION
+ : Number TIME_UNIT
+ ;
+
 Bool
  : 'true'
  | 'false'
@@ -279,6 +301,23 @@ EscapeSequence
    |   UnicodeEscape
    |   OctalEscape
    ;
+
+fragment 
+BYTE_UNIT
+ : [kK][bB]
+ | [mM][bB]
+ | [gG][bB]
+ | [tT][bB]
+ ;
+
+fragment 
+TIME_UNIT
+ : [mM][sS]
+ | [sS]
+ | [nN][sS]
+ | [mM][iI][nN]
+ ;
+
 
 fragment
 OctalEscape

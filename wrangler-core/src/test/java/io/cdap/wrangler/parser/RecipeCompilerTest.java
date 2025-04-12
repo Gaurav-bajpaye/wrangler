@@ -72,6 +72,14 @@ public class RecipeCompilerTest {
     CompileStatus status = TestingRig.compile(recipe);
     Assert.assertEquals(true, status.isSuccess());
   }
+  
+  @Test
+public void testAggregateStatsParsing() {
+    String[] recipe = new String[] {
+        "aggregate-stats :size :time total_size_mb total_time_sec MB s total"
+    };
+    // Use TestingRig or recipe compiler to assert valid parsing
+}
 
   @Test
   public void testSparedPragmaLoadDirectives() throws Exception {
